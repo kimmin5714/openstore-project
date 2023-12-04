@@ -1,0 +1,176 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.ssafy.commerce.model.mapper.CommerceMapper",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_109727380 { 
+   	label=ssafy
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_804866827 { 
+   	label=commerce
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   CommerceController1572025352[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CommerceController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   commerceService: CommerceService [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ dealCostAvgByDong(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ dealCostAvgList(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstate(id: String): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstateList(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstateListByAddress(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSalesByDong(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ storeList(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeEstate(map: Map&lt;String, String&gt;): ResponseEntity&lt;?&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeEstateRandomly(count: int): ResponseEntity&lt;?&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CommerceMapper215441902[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)CommerceMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getDealCostAvgByDong(map: Map&lt;String, String&gt;): List&lt;ComPropDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDealCostAvgByDongList(dongList: List&lt;DongCodeLatlngDto&gt;): List&lt;DealCostAvgDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDongByAddress(params: Map&lt;String, String&gt;): DongCodeLatlngDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDongsByCoords(map: Map&lt;String, String&gt;): List&lt;DongCodeLatlngDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDongsNearest(map: Map&lt;String, String&gt;): DongCodeLatlngDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstate(id: String): EstateDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstateList(map: Map&lt;String, String&gt;): List&lt;EstateDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstateListByAddress(map: Map&lt;String, String&gt;): List&lt;EstateDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSalesByDong(map: Map&lt;String, String&gt;): List&lt;SalesDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getStoreList(map: Map&lt;String, String&gt;): List&lt;StoreDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeEstate(map: Map&lt;String, String&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeEstateRandomly(list: List&lt;EstateDto&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+CommerceServiceImpl1237131004[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CommerceServiceImpl</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   commerceMapper: CommerceMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getDealCostAvgByDong(map: Map&lt;String, String&gt;): DealCostAvgDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDealCostAvgList(map: Map&lt;String, String&gt;): List&lt;DealCostAvgAndDongDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDongsByCoords(map: Map&lt;String, String&gt;): List&lt;DongCodeLatlngDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDongsNearest(map: Map&lt;String, String&gt;): DongCodeLatlngDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstate(id: String): EstateDto</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstateList(map: Map&lt;String, String&gt;): List&lt;EstateDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getEstateListByAddress(map: Map&lt;String, String&gt;): List&lt;EstateDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSalesByDong(map: Map&lt;String, String&gt;): List&lt;SalesDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getStoreList(map: Map&lt;String, String&gt;): List&lt;StoreDto&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeEstate(map: Map&lt;String, String&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ writeEstateRandomly(count: int): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+CommerceController1572025352 -> CommerceServiceImpl1237131004[label="commerceService
+[0..1]", arrowhead=none];
+CommerceServiceImpl1237131004 -> CommerceMapper215441902[label="commerceMapper
+[0..1]"];
+    
+}
+@enduml

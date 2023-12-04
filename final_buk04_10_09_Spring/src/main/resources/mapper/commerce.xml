@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.commerce.model.mapper.CommerceMapper">
+	
+	<select id="getStoreList" parameterType="map" resultType="storeDto">
+		select bizesId,bizesNm,brchNm,indsLclsCd,indsLclsNm,indsMclsCd,indsMclsNm,indsSclsCd,indsSclsNm,ksicCd,ksicNm,ctprvnCd,ctprvnNm,signguCd,signguNm,adongCd,adongNm,ldongCd,ldongNm,lnoCd,plotSctCd,plotSctNm,lnoMnno,lnoSlno,lnoAdr,rdnmCd,rdnm,bldMnno,bldSlno,bldMngNo,bldNm,rdnmAdr,oldZipcd,newZipcd,dongNo,flrNo,hoNo,lon,lat
+			from stores
+			<where>
+				and lat between #{latStart} and #{latEnd}
+				and lon between #{lonStart} and #{lonEnd}
+				
+				<if test="indsLclsCd != null and indsLclsCd != ''">
+					and indsLclsCd = #{indsLclsCd}
+				</if>
+			</where>
+	</select>
+	
+	<select id="getDongsByCoords" parameterType="map" resultType="dongCodeLatlngDto">
+		select dongcode, addressCount, sidoName, gugunName, dongName, lat, lon
+			from dongcodeLatlng
+			<where>
+				and lat between #{latStart} and #{latEnd}
+				and lon between #{lonStart} and #{lonEnd}
+			</where>
+	</select>
+	
+	<select id="getDongsNearest" parameterType="map" resultType="dongCodeLatlngDto">
+		select dongcode, addressCount, sidoName, gugunName, dongName, lat, lon
+			from dongcodeLatlng
+			order by (abs(lat-#{lat})+abs(lon-#{lon}))
+			limit 1
+	</select>
+	
+	<select id="getDongByAddress" parameterType="map" resultType="dongCodeLatlngDto">
+		select dongcode, addressCount, sidoName, gugunName, dongName, lat, lon 
+		from dongcodelatlng
+		where sidoname = #{sido}
+		and gugunName = #{gugun}
+		and dongName = #{dong}
+		limit 1;
+	</select>
+	
+	<select id="getEstate" parameterType="string" resultType="estateDto">
+		select id, dealClass,dealAmount,floor ,area ,description,joinYear ,joinMonth ,joinDay ,sido ,gugun,dong ,jibun,dongCode,lat ,lon 
+		from estates
+		where id = #{id};
+	</select>
+	
+	<select id="getEstateList" parameterType="map" resultType="estateDto">
+		select id, dealClass,dealAmount,floor ,area ,description,joinYear ,joinMonth ,joinDay ,sido ,gugun,dong ,jibun,dongCode,lat ,lon 
+		from estates
+			<where>
+				and lat between #{latStart} and #{latEnd}
+				and lon between #{lonStart} and #{lonEnd}
+			</where>	
+	</select>
+	<select id="getEstateListByAddress" parameterType="map" resultType="estateDto">
+		select id, dealClass,dealAmount,floor ,area ,description,joinYear ,joinMonth ,joinDay ,sido ,gugun,dong ,jibun,dongCode,lat ,lon
+		from estates
+		where sido = #{sido}
+		and gugun = #{gugun}
+		and dong = #{dong}
+	</select>
+	
+	<select id="getDealCostAvgByDong" parameterType="map" resultType="comPropDto">
+		select id, dealAmount, buildingArea, buildingUse, buildYear, dealYear, plottage, dong, sigungu, landUse, dealMonth, buildingType, dealDay, regionalCode 
+		from comProp
+		where regionalCode=substr(#{dongCode},1,5) and dong=#{dong}
+	</select>
+	
+	<select id="getDealCostAvgByDongList" parameterType="list" resultType="dealCostAvgDto">
+		select avg(dealAmount) as "dealAmountAvg" , avg(dealAmount/buildingArea) as "dealAmountPerArea", concat(regionalCode,dong) as "regionCodeAndDong"
+		from comProp
+		where concat(regionalCode,dong) in 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			 concat(substr(#{item.dongCode},1,5),#{item.dongName})
+		</foreach> 	
+		group by concat(regionalCode,dong);
+	</select>
+	
+	<select id="getSalesByDong" parameterType="map" resultType="salesDto">
+		select s.year_month,s.busi_area_div_code,s.busi_area_div_code_name,s.busi_area_code,s.busi_area_code_name,x_pos,y_pos,gugun_code,gugun_name,dong_code,dong_name,area,service_code,service_code_name,month_sales,month_sales_count,weekdays_sales,weekend_sales,monday_sales,tuesday_sales,wednesday_sales,thursday_sales,friday_sales,saturday_sales,sunday_sales,time_00_06_sales,time_06_11_sales,time_11_14_sales,time_14_17_sales,time_17_21_sales,time_21_24_sales,male_sales,female_sales,age_10_sales,age_20_sales,age_30_sales,age_40_sales,age_50_sales,age_60_above_sales,weekdays_sale_count,weekend_sales_count,monday_sales_count,tuesday_sales_count,wednesday_sales_count,thursday_sales_count,friday_sales_count,saturday_sales_count,sunday_sales_count,time_00_06_sales_count,time_06_11_sales_count,time_11_14_sales_count,time_14_17_sales_count,time_17_21_sales_count,time_21_24_sales_count,male_sales_count,female_sales_count,age_10_sales_count,age_20_sales_count,age_30_sales_count,age_40_sales_count,age_50_sales_count,age_60_above_sales_count 
+		from  salesposition p
+		join sales s on s.busi_area_code = p.busi_area_code
+		where s.busi_area_code = (select busi_area_code
+		from salesposition
+		order by (abs(y_pos-#{y_pos})+abs(x_pos-#{x_pos}))
+		limit 1);
+	</select>
+	
+	<insert id="writeEstate" parameterType="map">
+		insert into estates (dealClass,dealAmount ,floor ,area ,description,joinYear ,joinMonth ,joinDay ,sido ,gugun,dong ,jibun,dongCode,lat ,lon )
+		values (#{dealClass},#{dealAmount},#{floor},#{area},#{description},DATE_FORMAT(now(), "%Y"),DATE_FORMAT(now(), "%m"),DATE_FORMAT(now(), "%d"),#{sido},#{gugun},#{dong},#{jibun},#{dongCode},#{lat},#{lon})
+	</insert>
+	
+ 	<insert id="writeEstateRandomly" parameterType="list">
+    	insert into estates (dealClass,dealAmount ,floor ,area ,description,joinYear ,joinMonth ,joinDay ,sido ,gugun,dong ,jibun,dongCode,lat ,lon )
+    	values 
+    	<foreach collection="list" item="item" open="(" close=")" separator="),(">
+			 #{item.dealClass},#{item.dealAmount},#{item.floor},#{item.area},#{item.description},DATE_FORMAT(now(), "%Y"),DATE_FORMAT(now(), "%m"),DATE_FORMAT(now(), "%d"),#{item.sido},#{item.gugun},#{item.dong},#{item.jibun},#{item.dongCode},#{item.lat},#{item.lon}
+		</foreach> 	
+    </insert>
+
+</mapper>
